@@ -13,13 +13,13 @@ import Users from './pages/Users';
 import SystemLogs from './pages/SystemLogs';
 
 const routes = [
-  { path: '/',              Component: Dashboard,           title: 'Dashboard',             subtitle: 'AI Fall Detection Overview' },
-  { path: '/monitoring',    Component: LiveMonitoring,      title: 'Live Sensor Monitoring', subtitle: 'Real-time wearable sensor data' },
-  { path: '/alerts',        Component: Alerts,              title: 'Emergency Alerts',       subtitle: 'Active fall events requiring attention' },
-  { path: '/notifications', Component: NotificationHistory, title: 'Notification History',   subtitle: 'All past emergency notifications' },
+  { path: '/',              Component: Dashboard,           title: 'Dashboard',             subtitle: 'Latest reading, model result and saved alerts' },
+  { path: '/monitoring',    Component: LiveMonitoring,      title: 'Live Sensor Monitoring', subtitle: 'Sensor values from the backend feed' },
+  { path: '/alerts',        Component: Alerts,              title: 'Emergency Alerts',       subtitle: 'Confirmed notifications that need attention' },
+  { path: '/notifications', Component: NotificationHistory, title: 'Notification History',   subtitle: 'Saved emergency notifications and their status' },
   { path: '/simulator',     Component: Simulator,           title: 'Sensor Simulator',       subtitle: 'Demo Mode — test the AI pipeline' },
-  { path: '/users',         Component: Users,               title: 'Users & Devices',        subtitle: 'Monitored users and wearable devices' },
-  { path: '/logs',          Component: SystemLogs,          title: 'System Logs',            subtitle: 'Event log for API calls and pipeline steps' },
+  { path: '/users',         Component: Users,               title: 'Users & Devices',        subtitle: 'Prototype user selection and current feed' },
+  { path: '/logs',          Component: SystemLogs,          title: 'System Logs',            subtitle: 'Recent frontend events and API activity' },
 ];
 
 function AppLayout() {

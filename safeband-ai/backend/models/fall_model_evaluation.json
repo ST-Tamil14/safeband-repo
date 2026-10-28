@@ -1,0 +1,131 @@
+{
+  "dataset_directory": "datasets",
+  "participants": 34,
+  "rows_total": 271658,
+  "rows_train": 215896,
+  "rows_test": 55762,
+  "train_participants": [
+    "D01",
+    "D02",
+    "D03",
+    "D05",
+    "D06",
+    "D07",
+    "D08",
+    "D09",
+    "D10",
+    "D12",
+    "D13",
+    "D14",
+    "D15",
+    "D18",
+    "D19",
+    "F01",
+    "F02",
+    "F03",
+    "F04",
+    "F05",
+    "F06",
+    "F08",
+    "F09",
+    "F10",
+    "F11",
+    "F12",
+    "F15"
+  ],
+  "test_participants": [
+    "D04",
+    "D11",
+    "D16",
+    "D17",
+    "F07",
+    "F13",
+    "F14"
+  ],
+  "features": [
+    "ADXL345_Acc_X",
+    "ADXL345_Acc_Y",
+    "ADXL345_Acc_Z",
+    "ITG3200_Gyro_X",
+    "ITG3200_Gyro_Y",
+    "ITG3200_Gyro_Z",
+    "MMA8451Q_Acc_X",
+    "MMA8451Q_Acc_Y",
+    "MMA8451Q_Acc_Z"
+  ],
+  "classes": [
+    "0",
+    "1"
+  ],
+  "metrics": {
+    "accuracy": 0.7914529607976758,
+    "balanced_accuracy": 0.6716700662161321,
+    "fall_precision": 0.27215937869322976,
+    "fall_recall": 0.5174129353233831,
+    "fall_f1": 0.35669635448359793,
+    "confusion_matrix": [
+      [
+        40909,
+        8622
+      ],
+      [
+        3007,
+        3224
+      ]
+    ]
+  },
+  "classification_report": {
+    "0": {
+      "precision": 0.9315283723472083,
+      "recall": 0.8259271971088813,
+      "f1-score": 0.8755551275054309,
+      "support": 49531.0
+    },
+    "1": {
+      "precision": 0.27215937869322976,
+      "recall": 0.5174129353233831,
+      "f1-score": 0.35669635448359793,
+      "support": 6231.0
+    },
+    "accuracy": 0.7914529607976758,
+    "macro avg": {
+      "precision": 0.601843875520219,
+      "recall": 0.6716700662161321,
+      "f1-score": 0.6161257409945144,
+      "support": 55762.0
+    },
+    "weighted avg": {
+      "precision": 0.8578486585733491,
+      "recall": 0.7914529607976758,
+      "f1-score": 0.8175764141397152,
+      "support": 55762.0
+    }
+  },
+  "model": "RandomForestClassifier",
+  "model_parameters": {
+    "bootstrap": true,
+    "ccp_alpha": 0.0,
+    "class_weight": "balanced_subsample",
+    "criterion": "gini",
+    "max_depth": 18,
+    "max_features": "sqrt",
+    "max_leaf_nodes": null,
+    "max_samples": null,
+    "min_impurity_decrease": 0.0,
+    "min_samples_leaf": 2,
+    "min_samples_split": 2,
+    "min_weight_fraction_leaf": 0.0,
+    "monotonic_cst": null,
+    "n_estimators": 200,
+    "n_jobs": -1,
+    "oob_score": false,
+    "random_state": 42,
+    "verbose": 0,
+    "warm_start": false
+  },
+  "artifacts": {
+    "model": "models/fall_detection_model.joblib",
+    "label_encoder": "models/fall_label_encoder.joblib"
+  },
+  "prediction_threshold": 0.5
+}

@@ -34,18 +34,26 @@ async def create_notification(
         .execute()
     )
 
-    email_result = await send_emergency_email(
-        user_id=user_id,
-        message=message,
-        severity=severity or "unknown",
-        risk_score=risk_score or 0,
-        latitude=latitude,
-        longitude=longitude,
-    )
+    try:
+        email_result = await send_emergency_email(
+            user_id=user_id,
+            message=message,
+            severity=severity or "unknown",
+            risk_score=risk_score or 0,
+            latitude=latitude,
+            longitude=longitude,
+        )
+    except Exception as error:
+        # Keep the recorded alert even if the optional SMTP service is down.
+        email_result = {
+            "success": False,
+            "status": "email_failed",
+            "error": type(error).__name__,
+        }
 
     return {
         "success": True,
-        "status": email_result["status"],
+        "status": "alert_recorded",
         "message": message,
         "notification": database_response.data,
         "email": email_result,

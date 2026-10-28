@@ -42,6 +42,9 @@ function appReducer(state, action) {
       return { ...state, logs: [newLog, ...state.logs].slice(0, 200) };
     }
 
+    case 'CLEAR_LOGS':
+      return { ...state, logs: [] };
+
     case 'ADD_TOAST': {
       const toast = { id: Date.now(), ...action.payload };
       return { ...state, toasts: [...state.toasts, toast] };

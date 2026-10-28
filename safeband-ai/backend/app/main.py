@@ -57,8 +57,12 @@ app = FastAPI(
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "http://localhost:5173",
-        "http://localhost:3000",
+        origin.strip()
+        for origin in os.getenv(
+            "CORS_ORIGINS",
+            "http://localhost:5173,http://localhost:3000",
+        ).split(",")
+        if origin.strip()
     ],
     allow_credentials=True,
     allow_methods=["*"],
@@ -137,12 +141,12 @@ def receive_sensor_data(sensor: SensorData):
 @app.post("/fall/detect")
 def detect_fall_from_sensor(sensor: SensorData):
     result = detect_fall(
-        acc_x=sensor.acc_x,
-        acc_y=sensor.acc_y,
-        acc_z=sensor.acc_z,
-        gyro_x=sensor.gyro_x,
-        gyro_y=sensor.gyro_y,
-        gyro_z=sensor.gyro_z,
+        acc_x=sensor.adxl_acc_x,
+        acc_y=sensor.adxl_acc_y,
+        acc_z=sensor.adxl_acc_z,
+        gyro_x=sensor.itg_gyro_x,
+        gyro_y=sensor.itg_gyro_y,
+        gyro_z=sensor.itg_gyro_z,
     )
 
     return {
@@ -154,12 +158,12 @@ def detect_fall_from_sensor(sensor: SensorData):
 @app.post("/fall/confirm")
 def confirm_possible_fall(request: FallConfirmationRequest):
     detection_result = detect_fall(
-        acc_x=request.sensor.acc_x,
-        acc_y=request.sensor.acc_y,
-        acc_z=request.sensor.acc_z,
-        gyro_x=request.sensor.gyro_x,
-        gyro_y=request.sensor.gyro_y,
-        gyro_z=request.sensor.gyro_z,
+        acc_x=request.sensor.adxl_acc_x,
+        acc_y=request.sensor.adxl_acc_y,
+        acc_z=request.sensor.adxl_acc_z,
+        gyro_x=request.sensor.itg_gyro_x,
+        gyro_y=request.sensor.itg_gyro_y,
+        gyro_z=request.sensor.itg_gyro_z,
     )
 
     confirmation_result = confirm_fall(
@@ -178,12 +182,12 @@ def confirm_possible_fall(request: FallConfirmationRequest):
 @app.post("/fall/severity")
 def calculate_fall_severity(request: FallConfirmationRequest):
     detection_result = detect_fall(
-        acc_x=request.sensor.acc_x,
-        acc_y=request.sensor.acc_y,
-        acc_z=request.sensor.acc_z,
-        gyro_x=request.sensor.gyro_x,
-        gyro_y=request.sensor.gyro_y,
-        gyro_z=request.sensor.gyro_z,
+        acc_x=request.sensor.adxl_acc_x,
+        acc_y=request.sensor.adxl_acc_y,
+        acc_z=request.sensor.adxl_acc_z,
+        gyro_x=request.sensor.itg_gyro_x,
+        gyro_y=request.sensor.itg_gyro_y,
+        gyro_z=request.sensor.itg_gyro_z,
     )
 
     confirmation_result = confirm_fall(
@@ -236,25 +240,10 @@ async def process_fall(request: FallProcessRequest):
 @app.post("/fall/ml-detect")
 def ml_fall_detection(sensor: SensorData):
     try:
-        # Use ADXL345 values when available.
-        # Otherwise, use the common acc_x/acc_y/acc_z values.
-        adxl_acc_x = (
-            sensor.adxl_acc_x
-            if sensor.adxl_acc_x is not None
-            else sensor.acc_x
-        )
-
-        adxl_acc_y = (
-            sensor.adxl_acc_y
-            if sensor.adxl_acc_y is not None
-            else sensor.acc_y
-        )
-
-        adxl_acc_z = (
-            sensor.adxl_acc_z
-            if sensor.adxl_acc_z is not None
-            else sensor.acc_z
-        )
+        # The schema accepts both ADXL345 names and common acc_* aliases.
+        adxl_acc_x = sensor.adxl_acc_x
+        adxl_acc_y = sensor.adxl_acc_y
+        adxl_acc_z = sensor.adxl_acc_z
 
         # Use MMA8451Q values when available.
         # Otherwise, reuse the ADXL345/common accelerometer values.
@@ -304,24 +293,10 @@ async def ml_fall_process(request: FallProcessRequest):
     sensor = request.sensor
 
     try:
-        # ADXL345 accelerometer fallback
-        adxl_acc_x = (
-            sensor.adxl_acc_x
-            if sensor.adxl_acc_x is not None
-            else sensor.acc_x
-        )
-
-        adxl_acc_y = (
-            sensor.adxl_acc_y
-            if sensor.adxl_acc_y is not None
-            else sensor.acc_y
-        )
-
-        adxl_acc_z = (
-            sensor.adxl_acc_z
-            if sensor.adxl_acc_z is not None
-            else sensor.acc_z
-        )
+        # The schema accepts both ADXL345 names and common acc_* aliases.
+        adxl_acc_x = sensor.adxl_acc_x
+        adxl_acc_y = sensor.adxl_acc_y
+        adxl_acc_z = sensor.adxl_acc_z
 
         # MMA8451Q accelerometer fallback
         mma_acc_x = (
@@ -367,7 +342,7 @@ async def ml_fall_process(request: FallProcessRequest):
 
         # 3. Fall confirmation
         confirmation_result = confirm_fall(
-            fall_probability=ml_result["confidence"],
+            fall_probability=ml_result["fall_probability"],
             inactivity_seconds=request.inactivity_seconds,
             user_response=request.user_response,
         )
@@ -381,7 +356,7 @@ async def ml_fall_process(request: FallProcessRequest):
 
         # 5. Fall severity
         severity_result = calculate_severity(
-            fall_probability=ml_result["confidence"],
+            fall_probability=ml_result["fall_probability"],
             acceleration_magnitude=acceleration_magnitude,
             inactivity_seconds=request.inactivity_seconds,
             heart_rate=sensor.heart_rate,

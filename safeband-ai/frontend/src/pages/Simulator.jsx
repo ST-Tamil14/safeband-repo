@@ -122,17 +122,14 @@ export default function Simulator() {
     <div className="space-y-5 fade-in">
 
       {/* ── Info banner ─────────────────────────────────────────────────────── */}
-      <div className="flex items-start gap-3 p-4 bg-brand-50 border border-brand-200 rounded-xl">
-        <Info className="w-5 h-5 text-brand-600 flex-shrink-0 mt-0.5" />
+      <div className="flex items-start gap-3 p-4 bg-amber-50 border border-amber-200 rounded-xl">
+        <Info className="w-5 h-5 text-amber-700 flex-shrink-0 mt-0.5" />
         <div>
-          <p className="text-sm font-semibold text-brand-700">
-            Backend Simulator — <code className="text-xs font-mono bg-brand-100 px-1 rounded">simulator.py</code>
+          <p className="text-sm font-semibold text-amber-950">
+            Demo only — this is not a physical SafeBand
           </p>
-          <p className="text-xs text-brand-600 mt-1">
-            Clicking <strong>Start</strong> launches the <code className="font-mono text-[11px]">simulator.py</code>{' '}
-            script on the backend server as a subprocess. It continuously sends randomised sensor readings —
-            including occasional fall events — directly into the AI pipeline (every 3 s).
-            The simulator <strong>automatically stops</strong> when you navigate away from this page.
+          <p className="text-xs text-amber-900 mt-1 leading-5">
+            Start sends synthetic sensor readings to the AI pipeline every 3 seconds. It includes a fall scenario every tenth reading. Confirmed events can be saved to Supabase and may send email if email delivery is configured. Use a test project/account for demonstrations. The simulator stops when you leave this page.
           </p>
         </div>
       </div>

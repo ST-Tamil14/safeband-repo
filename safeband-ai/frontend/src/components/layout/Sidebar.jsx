@@ -1,7 +1,7 @@
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import {
   LayoutDashboard, Activity, AlertTriangle, Bell,
-  Play, Users, Terminal, Shield, X, Menu, ChevronRight
+  Play, Users, Terminal, Shield, X
 } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 
@@ -17,8 +17,6 @@ const navItems = [
 
 export default function Sidebar({ open, onClose }) {
   const { state } = useApp();
-  const location = useLocation();
-
   const statusColor =
     state.systemStatus === 'online' ? 'bg-green-500' :
     state.systemStatus === 'offline' ? 'bg-red-500' :
@@ -57,7 +55,7 @@ export default function Sidebar({ open, onClose }) {
             </div>
             <div>
               <p className="text-sm font-bold text-slate-800 leading-tight">SafeBand AI</p>
-              <p className="text-[10px] text-slate-400 leading-tight">Fall Detection System</p>
+              <p className="text-[10px] text-slate-400 leading-tight">Fall detection demo</p>
             </div>
           </div>
           <button
@@ -85,6 +83,11 @@ export default function Sidebar({ open, onClose }) {
               </span>
             </div>
           )}
+        </div>
+
+        <div className="mx-3 mt-3 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2">
+          <p className="text-[10px] font-bold uppercase tracking-wide text-amber-800">Prototype</p>
+          <p className="mt-0.5 text-[10px] leading-4 text-amber-800">Simulator data is synthetic. No physical band is connected.</p>
         </div>
 
         {/* Navigation */}

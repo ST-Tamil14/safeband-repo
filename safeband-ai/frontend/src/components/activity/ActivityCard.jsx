@@ -8,12 +8,16 @@ const activityConfig = {
   standing:   { label: 'Standing',   icon: PersonStanding,   color: 'text-green-600', bg: 'bg-green-50',  badge: 'bg-green-100 text-green-700 border-green-200' },
   lying:      { label: 'Lying Down', icon: BedDouble,        color: 'text-slate-500', bg: 'bg-slate-50',  badge: 'bg-slate-100 text-slate-600 border-slate-200' },
   'lying down': { label: 'Lying Down', icon: BedDouble, color: 'text-slate-500', bg: 'bg-slate-50', badge: 'bg-slate-100 text-slate-600 border-slate-200' },
+  normal_activity: { label: 'Normal Movement', icon: Activity, color: 'text-brand-600', bg: 'bg-brand-50', badge: 'bg-brand-100 text-brand-700 border-brand-200' },
+  possible_fall: { label: 'Possible Fall Motion', icon: TrendingDown, color: 'text-orange-600', bg: 'bg-orange-50', badge: 'bg-orange-100 text-orange-700 border-orange-200' },
+  lying_or_stationary: { label: 'Still / Lying Down', icon: BedDouble, color: 'text-slate-500', bg: 'bg-slate-50', badge: 'bg-slate-100 text-slate-600 border-slate-200' },
+  high_motion: { label: 'High Movement', icon: Zap, color: 'text-orange-600', bg: 'bg-orange-50', badge: 'bg-orange-100 text-orange-700 border-orange-200' },
   falling:    { label: 'Falling',    icon: TrendingDown,     color: 'text-red-600', bg: 'bg-red-50',    badge: 'bg-red-100 text-red-700 border-red-200' },
   unknown:    { label: 'Unknown',    icon: HelpCircle,       color: 'text-slate-400', bg: 'bg-slate-50',  badge: 'bg-slate-100 text-slate-500 border-slate-200' },
 };
 
 function getConfig(activity) {
-  const key = (activity || 'unknown').toLowerCase();
+  const key = String(activity || 'unknown').toLowerCase();
   return activityConfig[key] || activityConfig.unknown;
 }
 

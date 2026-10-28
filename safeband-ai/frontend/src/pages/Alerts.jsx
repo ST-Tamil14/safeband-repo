@@ -1,4 +1,4 @@
-import { AlertTriangle, Bell, RefreshCw, Filter } from 'lucide-react';
+import { AlertTriangle, Bell, RefreshCw, Info } from 'lucide-react';
 import AlertCard from '../components/alerts/AlertCard';
 import EmergencyBanner from '../components/alerts/EmergencyBanner';
 import LoadingState from '../components/ui/LoadingState';
@@ -18,6 +18,10 @@ export default function Alerts() {
 
   return (
     <div className="space-y-5 fade-in">
+      <div className="flex items-start gap-3 rounded-xl border border-sky-200 bg-sky-50 p-4 text-sm text-sky-950">
+        <Info className="mt-0.5 h-4 w-4 flex-shrink-0 text-sky-700" />
+        <p><strong>What appears here:</strong> saved emergency notifications that still need action. A model’s “possible fall” result is not an alert until the backend confirms it and records a notification.</p>
+      </div>
       {/* Emergency banner */}
       {active.length > 0 && <EmergencyBanner count={active.length} />}
 
@@ -49,7 +53,7 @@ export default function Alerts() {
         </div>
         {active.length === 0 ? (
           <div className="card">
-            <EmptyState message="No active alerts. All is well." icon={Bell} />
+            <EmptyState message="No unresolved emergency notifications are recorded for this user. This does not prove that a person is safe; check the live sensor result above and confirm the data feed is running." icon={Bell} />
           </div>
         ) : (
           <div className="space-y-3">

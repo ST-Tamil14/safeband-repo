@@ -20,7 +20,7 @@ export default function SystemLogs() {
   const { state, dispatch } = useApp();
   const logs = state.logs;
 
-  const clearLogs = () => dispatch({ type: 'ADD_LOG', payload: { type: 'System', message: 'Logs cleared', status: 'info' } });
+  const clearLogs = () => dispatch({ type: 'CLEAR_LOGS' });
 
   return (
     <div className="space-y-4 fade-in">
@@ -33,7 +33,7 @@ export default function SystemLogs() {
         <div className="flex items-center gap-2">
           <span className="badge bg-slate-100 text-slate-600 border-slate-200">{logs.length} entries</span>
           <button
-            onClick={() => dispatch({ type: 'SET_NOTIFICATIONS', payload: state.notifications })}
+            onClick={clearLogs}
             className="btn-secondary text-xs py-1.5"
           >
             <Trash2 className="w-3.5 h-3.5" />

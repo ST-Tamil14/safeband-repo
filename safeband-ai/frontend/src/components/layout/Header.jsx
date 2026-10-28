@@ -1,72 +1,43 @@
-import { Menu, Bell, Search, RefreshCw, AlertTriangle } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Bell, Menu, RefreshCw } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 import { timeAgo } from '../../utils/formatDate';
 
 export default function Header({ onMenuClick, title, subtitle }) {
   const { state } = useApp();
-
-  const statusConfig = {
-    online:   { color: 'bg-green-500', label: 'Online',      ring: 'ring-green-200' },
-    offline:  { color: 'bg-red-500',   label: 'Offline',     ring: 'ring-red-200' },
-    checking: { color: 'bg-yellow-400',label: 'Connecting…', ring: 'ring-yellow-200' },
-  };
-  const status = statusConfig[state.systemStatus] || statusConfig.checking;
+  const online = state.systemStatus === 'online';
+  const offline = state.systemStatus === 'offline';
 
   return (
-    <header className="sticky top-0 z-10 bg-white border-b border-slate-200 px-4 lg:px-6 py-3">
-      <div className="flex items-center gap-3">
-        {/* Mobile menu button */}
+    <header className="sticky top-0 z-10 border-b border-slate-200 bg-white/95 px-4 py-3 backdrop-blur lg:px-7">
+      <div className="flex min-h-10 items-center gap-3">
         <button
           onClick={onMenuClick}
-          className="lg:hidden p-2 rounded-lg text-slate-500 hover:bg-slate-100 transition-colors"
+          aria-label="Open navigation"
+          className="rounded-lg p-2 text-slate-500 hover:bg-slate-100 lg:hidden"
         >
-          <Menu className="w-5 h-5" />
+          <Menu className="h-5 w-5" />
         </button>
-
-        {/* Page title */}
-        <div className="flex-1 min-w-0">
-          <h1 className="text-lg font-bold text-slate-800 truncate leading-tight">{title}</h1>
-          {subtitle && <p className="text-xs text-slate-500 truncate leading-tight">{subtitle}</p>}
+        <div className="min-w-0 flex-1">
+          <p className="truncate text-lg font-bold leading-tight text-slate-950">{title}</p>
+          {subtitle && <p className="mt-0.5 truncate text-xs text-slate-500">{subtitle}</p>}
         </div>
-
-        {/* Right section */}
-        <div className="flex items-center gap-2 ml-auto">
-          {/* System status indicator */}
-          <div className={`hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-xs font-medium ring-2 ${status.ring} border-transparent`}>
-            <span className={`w-2 h-2 rounded-full ${status.color} dot-blink flex-shrink-0`} />
-            <span className="text-slate-600">Backend {status.label}</span>
-          </div>
-
-          {/* Last updated */}
-          {state.lastUpdated && (
-            <div className="hidden md:flex items-center gap-1 text-xs text-slate-400">
-              <RefreshCw className="w-3 h-3" />
-              <span>{timeAgo(state.lastUpdated)}</span>
-            </div>
-          )}
-
-          {/* Active alerts bell */}
-          <div className="relative">
-            <button className="p-2 rounded-lg text-slate-500 hover:bg-slate-100 transition-colors">
-              <Bell className="w-4 h-4" />
-            </button>
-            {state.activeAlertCount > 0 && (
-              <span className="absolute -top-0.5 -right-0.5 w-4 h-4 flex items-center justify-center bg-red-500 text-white text-[10px] font-bold rounded-full">
-                {state.activeAlertCount > 9 ? '9+' : state.activeAlertCount}
-              </span>
-            )}
-          </div>
-
-          {/* User badge */}
-          <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-brand-50 rounded-lg border border-brand-100">
-            <div className="w-6 h-6 rounded-full bg-brand-600 flex items-center justify-center">
-              <span className="text-white text-[10px] font-bold">SB</span>
-            </div>
-            <div className="text-xs">
-              <p className="font-semibold text-slate-700 leading-tight">Caregiver</p>
-              <p className="text-slate-400 leading-tight">{state.userId}</p>
-            </div>
-          </div>
+        {state.lastUpdated && (
+          <span className="hidden items-center gap-1.5 text-xs text-slate-500 md:flex">
+            <RefreshCw className="h-3.5 w-3.5" /> Updated {timeAgo(state.lastUpdated)}
+          </span>
+        )}
+        <span className={`inline-flex items-center gap-2 rounded-full border px-3 py-2 text-xs font-semibold ${online ? 'border-emerald-200 bg-emerald-50 text-emerald-800' : offline ? 'border-rose-200 bg-rose-50 text-rose-800' : 'border-amber-200 bg-amber-50 text-amber-800'}`}>
+          <span className={`h-2 w-2 rounded-full ${online ? 'bg-emerald-500' : offline ? 'bg-rose-500' : 'bg-amber-500'}`} />
+          API {online ? 'connected' : offline ? 'offline' : 'checking'}
+        </span>
+        <Link to="/alerts" aria-label="Open emergency alerts" className="relative rounded-lg border border-slate-200 p-2.5 text-slate-600 hover:bg-slate-50">
+          <Bell className="h-4 w-4" />
+          {state.activeAlertCount > 0 && <span className="absolute -right-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-rose-600 px-1 text-[10px] font-bold text-white">{state.activeAlertCount > 9 ? '9+' : state.activeAlertCount}</span>}
+        </Link>
+        <div className="hidden rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 sm:block">
+          <p className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">Demo user</p>
+          <p className="font-mono text-xs font-semibold text-slate-800">{state.userId}</p>
         </div>
       </div>
     </header>

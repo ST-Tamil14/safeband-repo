@@ -86,7 +86,9 @@ export default function NotificationTable({ notifications, loading, onAcknowledg
       </div>
 
       {filtered.length === 0 ? (
-        <EmptyState message="No notifications match your filters." />
+        <EmptyState message={notifications.length === 0
+          ? 'No emergency notification records have been saved for this user yet. A possible fall result is not saved as an alert until the backend confirms it.'
+          : 'No notifications match your current search and filters.'} />
       ) : (
         <>
           {/* Table */}

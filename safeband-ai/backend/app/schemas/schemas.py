@@ -1,19 +1,31 @@
 from datetime import datetime
 from typing import Optional
 
-from pydantic import BaseModel, Field
+from pydantic import AliasChoices, BaseModel, Field
 
 
 class SensorData(BaseModel):
     user_id: str
 
-    adxl_acc_x: float
-    adxl_acc_y: float
-    adxl_acc_z: float
+    adxl_acc_x: float = Field(
+        validation_alias=AliasChoices("adxl_acc_x", "acc_x")
+    )
+    adxl_acc_y: float = Field(
+        validation_alias=AliasChoices("adxl_acc_y", "acc_y")
+    )
+    adxl_acc_z: float = Field(
+        validation_alias=AliasChoices("adxl_acc_z", "acc_z")
+    )
 
-    itg_gyro_x: float
-    itg_gyro_y: float
-    itg_gyro_z: float
+    itg_gyro_x: float = Field(
+        validation_alias=AliasChoices("itg_gyro_x", "gyro_x")
+    )
+    itg_gyro_y: float = Field(
+        validation_alias=AliasChoices("itg_gyro_y", "gyro_y")
+    )
+    itg_gyro_z: float = Field(
+        validation_alias=AliasChoices("itg_gyro_z", "gyro_z")
+    )
 
     mma_acc_x: float | None = None
     mma_acc_y: float | None = None

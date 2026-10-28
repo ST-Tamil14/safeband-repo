@@ -10,12 +10,12 @@ async def process_fall_event(
     user_response: str | None = None,
 ) -> dict:
     detection_result = detect_fall(
-        acc_x=sensor.acc_x,
-        acc_y=sensor.acc_y,
-        acc_z=sensor.acc_z,
-        gyro_x=sensor.gyro_x,
-        gyro_y=sensor.gyro_y,
-        gyro_z=sensor.gyro_z,
+        acc_x=sensor.adxl_acc_x,
+        acc_y=sensor.adxl_acc_y,
+        acc_z=sensor.adxl_acc_z,
+        gyro_x=sensor.itg_gyro_x,
+        gyro_y=sensor.itg_gyro_y,
+        gyro_z=sensor.itg_gyro_z,
     )
 
     confirmation_result = confirm_fall(
